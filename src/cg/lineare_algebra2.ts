@@ -4,7 +4,7 @@ import Playground from "./playground";
 const pg = new Playground();
 pg.gridXZ(); // Grid
 
-/*
+
 //3x3 matrix_function
 function matrixProduct(a: number[][], b: number[][]) {
     // Ergebnismatrix initialisieren
@@ -57,34 +57,34 @@ const matrix2 = [
     [3, 3, 3]
 ];
 
-const matrix3 = [
+const matrix32 = [
     [2, 2, 2],
     [3, 3, 3],
     [2, 2, 2]
 ];
 
 // Create an arbitrary vector (3x1)
-const vector = [1, 2, 4];
+const vector10 = [1, 2, 4];
 
 //Apply transformations sequentially using individual matrices
 
-const transformedVector = multVecMatrix(multVecMatrix(multVecMatrix(vector, matrix1), matrix2), matrix3);
+const transformedVector = multVecMatrix(multVecMatrix(multVecMatrix(vector10, matrix1), matrix2), matrix3);
 console.log("Transformed vector (Sequential Transformations):", transformedVector);
 pg.visVector(transformedVector, {color:"black", label:"einzelnd"});
 
-const Matrix01 = matrixProduct (matrixProduct(matrix1,matrix2), matrix3);
+const Matrix01 = matrixProduct (matrixProduct(matrix1,matrix2), matrix32);
 console.log("Result Matrixproduct: ",Matrix01);
 
 
 // Apply transformation using the combined matrix (A * B * C)
-const combinedTransformedVector = multVecMatrix(vector, Matrix01);
+const combinedTransformedVector = multVecMatrix(vector10, Matrix01);
 pg.visVector (combinedTransformedVector, {color:"purple", label:"combined"});
 
 console.log("Transformed vector (Combined Matrix):", combinedTransformedVector);
 
-*/
+
 // ROTATE! 
-/*
+
 // Function to convert degrees to radians
 function degToRad(degrees: number) {
     return degrees * Math.PI / 180;
@@ -130,7 +130,7 @@ function rotZ(angleDegrees: number) {
 }
 
 // Function to multiply a vector (3x1) by a matrix (3x3)
-function multVecMatrix(vector: number[], matrix: number[][]) {
+/*function multVecMatrix(vector: number[], matrix: number[][]) {
     let result = [0, 0, 0];
 
     for (let i = 0; i < 3; i++) {
@@ -140,20 +140,20 @@ function multVecMatrix(vector: number[], matrix: number[][]) {
     }
 
     return result;
-}
+}*/
 
 // Example usage:
-const vector = [6, 0, 0]; // Initial vector along the x-axis
+const vector11 = [6, 0, 0]; // Initial vector along the x-axis
 
 // Rotate the vector around x-axis by 90 degrees
 const rotationMatrixX = rotX(90);
-const rotatedVectorX = multVecMatrix(vector, rotationMatrixX);
+const rotatedVectorX = multVecMatrix(vector11, rotationMatrixX);
 console.log("Rotated vector around x-axis:", rotatedVectorX);
 pg.visVector(rotatedVectorX, {color:"red", label:"X"});
 
 // Rotate the vector around y-axis by 90 degrees
 const rotationMatrixY = rotY(90);
-const rotatedVectorY = multVecMatrix(vector, rotationMatrixY);
+const rotatedVectorY = multVecMatrix(vector11, rotationMatrixY);
 console.log("Rotated vector around y-axis:", rotatedVectorY);
 pg.visVector(rotatedVectorY, {color:"blue", label:"Y"});
 
@@ -164,19 +164,10 @@ const rotatedVectorZ = multVecMatrix(vector, rotationMatrixZ);
 console.log("Rotated vector around z-axis:", rotatedVectorZ);
 pg.visVector(rotatedVectorZ, {color:"black", label:"Z"});
 
-*/
+
 // Shearing
-/*
-// Function to perform matrix-vector multiplication
-function multVecMatrix(vector: number[], matrix: number[]): number[] {
-    const result: number[] = [0, 0, 0];
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            result[i] += matrix[i * 3 + j] * vector[j];
-        }
-    }
-    return result;
-}
+
+
 
 // Define cube points as an array of arrays
 const cubePoints: number[][] = [
@@ -214,7 +205,7 @@ for (let p of cubePoints) {
         pg.visPoint(transformedPoint, { color, pscale: 0.05 }); // Visualize transformed point
     });
 }
-*/
+
 export type Vec3 = [number, number, number];
 export type Vec4 = [number, number, number, number];
 
@@ -293,8 +284,8 @@ console.log("Result of matrix product:", productMatrix);
 pg.visVector(productMatrix, {color:"blue", label:"resultM"});
 
 // Test matrix3ToMatrix4
-const resultMatrix4: Matrix4 = matrix3ToMatrix4(matrix3);
-console.log("Result of converting Matrix3 to Matrix4:", resultMatrix4);
-pg.visVector(resultMatrix4, {color:"blue", label:"resultM4"});
+//const resultMatrix4: Matrix4 = matrix3ToMatrix4(matrix3);
+//console.log("Result of converting Matrix3 to Matrix4:", resultMatrix4);
+//pg.visVector(resultMatrix4, {color:"blue", label:"resultM4"});
 
 
