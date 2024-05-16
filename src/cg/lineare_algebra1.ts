@@ -46,7 +46,7 @@ const normalizedV = vecNormalize(v2);
 console.log("Normalized vector v2:", normalizedV); // Output: Normalized vector v: [0.5345224838248488, 0.5345224838248488, 0.8017837257372732]
 
 // vecDotProduct A * B
-function vecDotProduct(u: number[], v: number[]): number {
+export function vecDotProduct(u: number[], v: number[]): number {
     // Check if the vectors have the same length
     if (u.length !== v.length) {
         throw new Error("Vectors must have the same length for dot product calculation.");
@@ -140,3 +140,35 @@ pg.visVector(normalizedV, {color :"Yellow", label:"Normalized" });
 pg.visVector(vector1, {color:"blue", label: "vektor1"});
 pg.visVector(vector2, {color:"red", label: "vektor2"});
 */
+
+ // Definition der Funktion vecMultiplyScalar
+ export function vecMultiplyScalar(scalar: number, vector: number[]): number[] {
+    // Erzeugt einen neuen Vektor, der das Ergebnis der Skalarmultiplikation enthält
+    const result: number[] = [];
+    
+    // Durchläuft jeden Eintrag im Vektor und multipliziert ihn mit dem Skalar
+    for (let i = 0; i < vector.length; i++) {
+        result[i] = scalar * vector[i];
+    }
+    
+    // Gibt den neuen Vektor zurück, der das Ergebnis der Skalarmultiplikation enthält
+    return result;
+}
+
+export function vecSubtract(vector1: number[], vector2: number[]): number[] {
+    // Überprüfen, ob beide Vektoren die gleiche Länge haben
+    if (vector1.length !== vector2.length) {
+        throw new Error("Vectors must have the same length for subtraction.");
+    }
+    
+    // Erzeugt einen neuen Vektor für das Ergebnis der Vektorsubtraktion
+    const result: number[] = [];
+    
+    // Durchläuft jeden Eintrag in den Vektoren und subtrahiert die entsprechenden Einträge
+    for (let i = 0; i < vector1.length; i++) {
+        result[i] = vector1[i] - vector2[i];
+    }
+    
+    // Gibt den neuen Vektor zurück, der das Ergebnis der Vektorsubtraktion enthält
+    return result;
+}

@@ -68,7 +68,7 @@ const vector10 = [1, 2, 4];
 
 //Apply transformations sequentially using individual matrices
 
-const transformedVector = multVecMatrix(multVecMatrix(multVecMatrix(vector10, matrix1), matrix2), matrix3);
+const transformedVector = multVecMatrix(multVecMatrix(multVecMatrix(vector10, matrix1), matrix2), matrix32);
 console.log("Transformed vector (Sequential Transformations):", transformedVector);
 pg.visVector(transformedVector, {color:"black", label:"einzelnd"});
 
@@ -160,7 +160,7 @@ pg.visVector(rotatedVectorY, {color:"blue", label:"Y"});
 
 // Rotate the vector around z-axis by 90 degrees
 const rotationMatrixZ = rotZ(90);
-const rotatedVectorZ = multVecMatrix(vector, rotationMatrixZ);
+const rotatedVectorZ = multVecMatrix(vector11, rotationMatrixZ);
 console.log("Rotated vector around z-axis:", rotatedVectorZ);
 pg.visVector(rotatedVectorZ, {color:"black", label:"Z"});
 

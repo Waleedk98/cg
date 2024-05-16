@@ -104,7 +104,7 @@ for (let yCoord = -1; yCoord <= 1; yCoord += step) {
             
             // Visualisierung der Schnittpunkte, wenn sie nicht-negativ sind
             if (t1 >= 0) {
-                pg.visPoint(vecMultiplyScalar(t1, v), { color: "red" });
+                pg.visPoint(vecMultiplyScalar(t1, v), { color: "red",  });
             }
 
             if (t2 >= 0) {
