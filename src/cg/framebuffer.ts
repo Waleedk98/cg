@@ -6,27 +6,25 @@ export interface ICoord2D {
 }
 
 export default class Framebuffer {
-    private canvas: HTMLCanvasElement;
-    private ctx: CanvasRenderingContext2D;
-    private buffer: ImageData;
-    private color: Color3;
-    private saveLink!: HTMLAnchorElement;
-    private saveButton!: HTMLButtonElement;
-    private logField!: HTMLUListElement;
+    private canvas: HTMLCanvasElement
+    private ctx
+    private buffer
+    private color: Color3
+    private saveLink: HTMLAnchorElement
+    private saveButton: HTMLButtonElement
+    private logField: HTMLUListElement
 
     constructor(width = 100, height = 100) {
-        for (const key in sessionStorage) {
+
+        // Remove stored images
+        for (var key in sessionStorage) {
             if (key.indexOf("render.") === 0) {
                 sessionStorage.removeItem(key);
             }
         }
 
-        this.color = [0, 0, 0];
+        this.color = [0, 0, 0]
         const appEl = document.getElementById("app");
-        if (!appEl) {
-            throw new Error("Element with id 'app' not found");
-        }
-
         appEl.style.display = "flex";
         appEl.style.height = "100vh";
         appEl.style.width = "100vw";
@@ -38,46 +36,57 @@ export default class Framebuffer {
         this.canvas.id = "framebuffer";
         this.canvas.width = width;
         this.canvas.height = height;
-        this.canvas.style.borderWidth = "2px";
+        this.canvas.style.borderWidth = "2px"
 
         const header = document.createElement("h2");
         header.innerText = "framebuffer: " + width + "x" + height;
         appEl.appendChild(header);
         appEl.appendChild(this.canvas);
 
-        const ctx = this.canvas.getContext("2d");
-        if (!ctx) {
-            throw new Error("No canvas 2d context!");
-        }
-        this.ctx = ctx;
+        this.ctx = this.canvas.getContext("2d");
 
+        if (!this.ctx) {
+            console.warn("No canvas 2d context!")
+            return
+        }
+
+        // Setup save link
         this.saveLink = document.createElement("a");
         this.saveLink.id = "save";
+
         this.saveLink.style.display = "none";
         appEl.appendChild(this.saveLink);
 
+        // Save button
         this.saveButton = document.createElement("button");
         this.saveButton.innerText = "Download Frames";
         appEl.appendChild(this.saveButton);
-        this.saveButton.addEventListener("click", () => this.download());
 
+        this.saveButton.addEventListener("click", () => this.download())
+
+        // Log 
         this.logField = document.createElement("ul");
         this.logField.id = "log";
         appEl.appendChild(this.logField);
 
-        const buffer = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-        if (!buffer) {
-            throw new Error("Failed to get image data");
-        }
-        this.buffer = buffer;
+        // Get pixel data
+        this.buffer = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+
     }
 
-    draw(x: number, y: number, color: Color3 = [80, 80, 80]): void {
+    
+    draw(x: number, y: number, color: Color3 = [80, 80, 80], parameters?: {}): void {
+
+        const defaults = {
+        }
+
+        const params = { ...defaults, ...parameters }
         this.color = color;
 
         if (!this.buffer) return;
 
-        const offset = 4 * x + (this.buffer.width * 4) * y;
+        // The first (red) component for this pixel
+        var offset = 4 * x + (this.buffer.width * 4) * y;
 
         const redIndex = offset;
         const greenIndex = redIndex + 1;
@@ -90,39 +99,36 @@ export default class Framebuffer {
         this.buffer.data[alphaIndex] = 255;
     }
 
+
     update() {
-        if (!this.ctx || !this.buffer) return;
+        if (!this.ctx) return;
+
         this.ctx.putImageData(this.buffer, 0, 0);
     }
 
     save(name: string) {
-        if (!this.canvas) return;
-        const dataURL = this.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-        sessionStorage.setItem("render." + name, dataURL);
-        console.log(`Saved frame ${name}`);
+        sessionStorage.setItem("render." + name, this.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+
     }
 
     download() {
-        for (const key in sessionStorage) {
+        for (var key in sessionStorage) {
             if (key.indexOf("render.") === 0) {
-                const dataURL = sessionStorage.getItem(key);
-                if (dataURL) {
-                    console.info("Downloading", key);
-                    this.saveLink.setAttribute('download', key + '.png');
-                    this.saveLink.setAttribute('href', dataURL);
-                    this.saveLink.click();
-                }
+                sessionStorage.getItem(key)
+                console.info("Downloading", key)
+                this.saveLink.setAttribute('download', key + '.png');
+                this.saveLink.setAttribute('href', sessionStorage[key]);
+                this.saveLink.click();
             }
         }
     }
 
-    log(content: string) {
-        this.logField.innerText = content;
-    }
+     log(content: string) {
+         this.logField.innerText = content;
+     }
 
     clear() {
-        if (!this.ctx) return;
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.reset();
         this.buffer = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
         this.update();
     }
